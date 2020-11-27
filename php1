@@ -1,0 +1,104 @@
+<?php
+ define('JOURS',['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche']);
+  define('CREN',[[
+    [8,12],
+    [14,19]
+],
+[[9,11]],
+[[10,12],[18,19]],
+[[11,13],[16,19],[20,23]],
+[[8,13],[14,24]],
+[[]],
+[[]]]);
+function cr(){
+    global $c;
+    $k=[];
+    $PEGA=[[8,12],[14,19]];
+    foreach ($PEGA as $d){  
+        $k[]='<strong>'.$d[0].'</strong> heures  à '.'<strong>'.$d[1].'</strong>'.' heures';
+        $y=implode(" et de ",$k);
+        
+    }
+    echo "Magasin ouvert de ".$y;
+};
+function cren(){
+    foreach (JOURS as $p=> $jour){
+    $k=[];
+    $PEGA=CREN[$p];
+    foreach ($PEGA as $d){ 
+        
+        $k[]='<strong>'.$d[0].' heures'.'</strong> à <strong> '.$d[1].' heures </strong>';
+        $y=implode(' et de ',$k);
+    }
+    if(empty($d)){
+        echo "<li>$jour : Le magasin est férme</li>";
+    } 
+    else{
+        echo ("<li>$jour : Le magasin est ouvert $y \n</li>");}
+    }
+};
+function ver(){
+    date_default_timezone_set('Europe/Paris');
+    $day=date('N');
+    $hour=date('G');
+    $bool=false;
+    $f=[];
+foreach (JOURS as $p=> $jour){
+        if($day==$p+1){
+            $f[]=$day;
+            $PEGA=CREN[$p];
+            $k=[];
+            foreach ($PEGA as $d){ 
+               $k[]=[$d[0],$d[1]];
+            }
+            foreach($k as $z){
+                if(($hour>=$z[0])and($hour<$z[1])){
+                   $bool=true;
+                   break;
+                }
+            }
+          };
+};
+if($bool==true){
+     echo '<div class="alert alert-success">
+    <strong>Aujourd \'hui Le magasin est ouvert cette journée à cette heure-ci</strong>
+</div>';
+
+}
+else{
+    echo '<div class="alert alert-danger">
+    <strong>Aujourd\' hui Le magasin est fermé cette journée à cette heure-ci,Désole</strong>
+</div>';};
+};
+function veru(){
+    $day=(int)$_GET['jour'];
+    $hour=(int)$_GET['hour'];
+    $bool=false;
+    $f=[];
+foreach (JOURS as $p=> $jour){
+        if($day==$p){
+            $f[]=$day;
+            $PEGA=CREN[$p];
+            $k=[];
+            foreach ($PEGA as $d){ 
+               $k[]=[$d[0],$d[1]];
+            }
+            foreach($k as $z){
+                if(($hour>=$z[0])and($hour<$z[1])){
+                   $bool=true;
+                   break;
+                }
+            }
+          };
+};
+if($bool==true){
+     echo '<div class="alert alert-success">
+    <strong>Cette jour et cet heure,le magasin sera ouvert</strong>
+</div>';
+
+}
+else{
+    echo '<div class="alert alert-danger">
+    <strong>Cette jour et cet heure,le magasin sera férme,Désole</strong>
+</div>';};
+}
